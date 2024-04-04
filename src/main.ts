@@ -17,9 +17,9 @@ async function start() {
     const app = await NestFactory.create(AppModule);
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/docs', app, document);
-    app.use(cookieParser);
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe());
+    app.use(cookieParser());
     await app.listen(PORT, () => {
       console.log(`Server started at ${PORT}`);
     });

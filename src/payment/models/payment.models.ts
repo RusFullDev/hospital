@@ -1,12 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   AllowNull,
+  BelongsToMany,
   Column,
   DataType,
   HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
+import { Appointment } from 'src/appointments/models/appointment.models';
 import { Service } from 'src/services/models/service.models';
 
 interface ICreatePaymentAttr {
@@ -29,4 +31,6 @@ export class Payment extends Model<Payment, ICreatePaymentAttr> {
 
   @HasMany(() => Service)
   service: Service[];
+  // @BelongsToMany(() => Service, () => Appointment)
+  // appointment: Appointment[];
 }

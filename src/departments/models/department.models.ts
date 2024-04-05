@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
+import { Doctor } from 'src/doctor/models/doctor.models';
 
 interface ICreateDepartmentAttr {
   department_name: string;
@@ -29,8 +30,15 @@ export class Department extends Model<Department, ICreateDepartmentAttr> {
     example: '1',
     description: 'unique ID - numbers',
   })
+
+  // @ForeignKey(()=>Doctor)
   @Column({
     type: DataType.STRING,
   })
   head_doctorId: number;
+  // @BelongsTo(()=>Doctor)
+  // doctor:Doctor
+  @HasMany(()=>Doctor)
+  doctor:Doctor[]
+  
 }

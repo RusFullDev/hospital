@@ -1,5 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  
+  Column,
+  DataType,
+  ForeignKey,
+  HasOne,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Doctor } from 'src/doctor/models/doctor.models';
+import { Patient } from 'src/patient/models/patient.models';
 
 interface ICreateMedicalAttr {
   patientId: number;
@@ -10,7 +21,7 @@ interface ICreateMedicalAttr {
 }
 
 @Table({ tableName: 'medical_record' })
-export class MedicalRecord extends Model<MedicalRecord,ICreateMedicalAttr> {
+export class MedicalRecord extends Model<MedicalRecord, ICreateMedicalAttr> {
   @ApiProperty({ example: 1, description: ' unique ID - numbers' })
   @Column({
     type: DataType.INTEGER,
@@ -20,16 +31,22 @@ export class MedicalRecord extends Model<MedicalRecord,ICreateMedicalAttr> {
   id: number;
 
   @ApiProperty({ example: 1, description: 'Patient unique ID - numbers' })
+  @ForeignKey(()=>Patient)
   @Column({
     type: DataType.INTEGER,
   })
   patientId: number;
+  // @BelongsTo(()=>Patient)
+  // patient:Patient
 
   @ApiProperty({ example: 1, description: 'Doctors unique ID - numbers' })
+  @ForeignKey(()=>Doctor)
   @Column({
     type: DataType.INTEGER,
   })
   doctorId: number;
+  // @BelongsTo(()=>Doctor)
+  // doctor:Doctor
 
   @ApiProperty({
     example: '2023-01-01',
@@ -39,7 +56,6 @@ export class MedicalRecord extends Model<MedicalRecord,ICreateMedicalAttr> {
     type: DataType.DATE,
   })
   date_visit: Date;
-
 
   @ApiProperty({
     example: 'covid-19',
@@ -58,4 +74,5 @@ export class MedicalRecord extends Model<MedicalRecord,ICreateMedicalAttr> {
     type: DataType.STRING,
   })
   treatment_plan: string;
+  
 }

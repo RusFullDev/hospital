@@ -58,7 +58,7 @@ export class AdminService {
   }
   /******************************************registratsiya************************************/
 
-  async registration(createAdminDto: CreateAdminDto, res: Response) {
+  async registration(createAdminDto, res: Response) {
     const admin = await this.adminServiceRepo.findOne({
       where: { email: createAdminDto.email },
     });

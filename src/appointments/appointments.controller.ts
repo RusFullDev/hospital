@@ -8,12 +8,15 @@ import {
   Delete,
   HttpCode,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Appointment } from './models/appointment.models';
+import { AdminGuard } from 'src/guards/admin.guard';
+import { JwtGuards } from 'src/guards/user.guard';
 
 @ApiTags('appointments')
 @Controller('appointments')
@@ -55,6 +58,7 @@ export class AppointmentsController {
     return this.appointmentsService.update(+id, updateAppointmentDto);
   }
 
+ 
   @HttpCode(200)
   @ApiOperation({ summary: 'delete appointment by id' })
   @ApiResponse({ status: 200, type: Appointment })

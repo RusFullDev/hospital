@@ -20,12 +20,14 @@ import { Response } from 'express';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { CookieGetter } from 'src/decorators/cookie-getter.decorators';
 import { AdminGuard } from 'src/guards/admin.guard';
+import { CreatorGuards } from 'src/guards/creator.guard';
 
 @ApiTags('admin')
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
+  @UseGuards(CreatorGuards)
   @HttpCode(201)
   @ApiOperation({ summary: 'register admin' })
   @ApiResponse({ status: 201, type: Admin })
@@ -48,7 +50,6 @@ export class AdminController {
     return this.adminService.login(loginAdminDto, res);
   }
 
-  @UseGuards(AdminGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'logout admin' })
   @ApiResponse({ status: 200, type: Admin })
@@ -61,6 +62,7 @@ export class AdminController {
     return this.adminService.logout(refreshToken, res);
   }
 
+  @UseGuards(AdminGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'refresh token admin' })
   @ApiResponse({ status: 200, type: Admin })
@@ -75,6 +77,7 @@ export class AdminController {
     return this.adminService.refreshToken(+id, refreshToken, res);
   }
 
+  @UseGuards(AdminGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'get all admin' })
   @ApiResponse({ status: 200, type: Admin })
@@ -83,6 +86,7 @@ export class AdminController {
     return this.adminService.findAll();
   }
 
+  @UseGuards(AdminGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'get admin by id' })
   @ApiResponse({ status: 200, type: Admin })
@@ -90,7 +94,6 @@ export class AdminController {
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(+id);
   }
-
 
   @UseGuards(AdminGuard)
   @HttpCode(200)
@@ -101,7 +104,6 @@ export class AdminController {
     return this.adminService.update(+id, updateAdminDto);
   }
 
-  
   @UseGuards(AdminGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'deleted admin' })

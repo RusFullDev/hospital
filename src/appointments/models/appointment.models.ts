@@ -1,12 +1,16 @@
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
+import { Doctor } from 'src/doctor/models/doctor.models';
+import { Patient } from 'src/patient/models/patient.models';
+import { Payment } from 'src/payment/models/payment.models';
 import { Service } from 'src/services/models/service.models';
 import { Status } from 'src/status/models/status.models';
 
@@ -30,16 +34,22 @@ export class Appointment extends Model<Appointment, ICreateAppointmentAttr> {
   id: number;
 
   @ApiProperty({ example: 2, description: ' Patient unique ID - numbers' })
+  @ForeignKey(()=>Patient)
   @Column({
     type: DataType.INTEGER,
   })
   patientId: number;
+  @BelongsTo(()=>Patient)
+  patient:Patient
 
   @ApiProperty({ example: 3, description: ' Doctor unique ID - numbers' })
+  @ForeignKey(()=>Doctor)
   @Column({
     type: DataType.INTEGER,
   })
   doctorId: number;
+  @BelongsTo(()=>Doctor)
+  doctror:Doctor
 
   @ApiProperty({ example: 3, description: ' Service unique ID - numbers' })
   @ForeignKey(() => Service)
@@ -67,4 +77,7 @@ export class Appointment extends Model<Appointment, ICreateAppointmentAttr> {
     type: DataType.DATE,
   })
   appointmentDateTime: Date;
+
+  // @BelongsToMany(()=>Service,()=>Payment)
+  // services:Service[]
 }
